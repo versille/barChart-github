@@ -7,7 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "BarChartView.h"
 
 @interface ViewController : UIViewController
+@property (weak, nonatomic) IBOutlet BarChartView *barChart;
+
 
 @end

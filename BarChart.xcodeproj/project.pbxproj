@@ -22,6 +22,7 @@
 		ACB1C65D19505C3D00B6FF1C /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ACB1C63C19505C3D00B6FF1C /* UIKit.framework */; };
 		ACB1C66519505C3D00B6FF1C /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = ACB1C66319505C3D00B6FF1C /* InfoPlist.strings */; };
 		ACB1C66719505C3D00B6FF1C /* BarChartTests.m in Sources */ = {isa = PBXBuildFile; fileRef = ACB1C66619505C3D00B6FF1C /* BarChartTests.m */; };
+		ACB1C67C195436A300B6FF1C /* BarChartView.m in Sources */ = {isa = PBXBuildFile; fileRef = ACB1C67B195436A300B6FF1C /* BarChartView.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -55,6 +56,8 @@
 		ACB1C66219505C3D00B6FF1C /* BarChartTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "BarChartTests-Info.plist"; sourceTree = "<group>"; };
 		ACB1C66419505C3D00B6FF1C /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		ACB1C66619505C3D00B6FF1C /* BarChartTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BarChartTests.m; sourceTree = "<group>"; };
+		ACB1C67A195436A300B6FF1C /* BarChartView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BarChartView.h; sourceTree = "<group>"; };
+		ACB1C67B195436A300B6FF1C /* BarChartView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BarChartView.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -118,6 +121,8 @@
 				ACB1C64819505C3D00B6FF1C /* AppDelegate.m */,
 				ACB1C64A19505C3D00B6FF1C /* Main_iPhone.storyboard */,
 				ACB1C64D19505C3D00B6FF1C /* Main_iPad.storyboard */,
+				ACB1C67A195436A300B6FF1C /* BarChartView.h */,
+				ACB1C67B195436A300B6FF1C /* BarChartView.m */,
 				ACB1C65019505C3D00B6FF1C /* ViewController.h */,
 				ACB1C65119505C3D00B6FF1C /* ViewController.m */,
 				ACB1C65319505C3D00B6FF1C /* Images.xcassets */,
@@ -256,6 +261,7 @@
 				ACB1C65219505C3D00B6FF1C /* ViewController.m in Sources */,
 				ACB1C64919505C3D00B6FF1C /* AppDelegate.m in Sources */,
 				ACB1C64519505C3D00B6FF1C /* main.m in Sources */,
+				ACB1C67C195436A300B6FF1C /* BarChartView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
