@@ -44,11 +44,13 @@
     }
     return self;
 }
-- (void)createArcAnimationForKey:(NSString *)key fromValue:(NSNumber *)from toValue:(NSNumber *)to Delegate:(id)delegate
+- (void)createArcAnimationForKey:(NSString *)key fromValue:(NSNumber *)from toValue:(NSNumber *)to timing:(CFTimeInterval)duration Delegate:(id)delegate
 {
     CABasicAnimation *arcAnimation = [CABasicAnimation animationWithKeyPath:key];
     NSNumber *currentAngle = [[self presentationLayer] valueForKey:key];
     if(!currentAngle) currentAngle = from;
+    
+    arcAnimation.duration = duration;
     [arcAnimation setFromValue:currentAngle];
     [arcAnimation setToValue:to];
     [arcAnimation setDelegate:delegate];
@@ -101,7 +103,7 @@
             bar.backgroundColor = [UIColor colorWithWhite:0.7 alpha:1];
             bar.layer.cornerRadius = 3.0;
             bar.layer.masksToBounds = YES;
-            bar.layer.borderColor = [UIColor redColor].CGColor;
+            bar.layer.borderColor = [UIColor whiteColor].CGColor;
             bar.layer.borderWidth = 3.0;
             [baseBars addObject:bar];
             [barChart addSubview:bar];
@@ -129,15 +131,9 @@
     [baseBar.layer addSublayer:bar];
 
     bar.path = path.CGPath;
+    
+    [bar createArcAnimationForKey:@"strokeEnd" fromValue:@0.0 toValue:@1.0f timing:5.0 Delegate:self];
 
-    CABasicAnimation *anim = [CABasicAnimation animationWithKeyPath:@"strokeEnd"];
-    anim.duration = 1.0;
-    anim.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseOut];
-    anim.fromValue = @0.0f;
-    anim.toValue = @1.0f;
-    [bar addAnimation:anim forKey:@"strokeEndAnim"];
-
-    bar.strokeEnd = 1.0;
 }
 
 /*
