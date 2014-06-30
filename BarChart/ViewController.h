@@ -11,6 +11,7 @@
 
 @interface ViewController : UIViewController
 @property (weak, nonatomic) IBOutlet BarChartView *barChart;
+@property (weak, nonatomic) IBOutlet BarChartView *multiBarChart;
 
 
 @end
