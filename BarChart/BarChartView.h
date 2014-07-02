@@ -14,6 +14,7 @@
 @property (nonatomic, assign) CGFloat barHeight;
 @property (nonatomic, assign) CGFloat barStartPosition;
 @property (nonatomic, assign) CGFloat chartMargin;
+
 -(void)loadBarchart;
 
 @end

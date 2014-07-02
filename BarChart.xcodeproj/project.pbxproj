@@ -23,6 +23,7 @@
 		ACB1C66519505C3D00B6FF1C /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = ACB1C66319505C3D00B6FF1C /* InfoPlist.strings */; };
 		ACB1C66719505C3D00B6FF1C /* BarChartTests.m in Sources */ = {isa = PBXBuildFile; fileRef = ACB1C66619505C3D00B6FF1C /* BarChartTests.m */; };
 		ACB1C67C195436A300B6FF1C /* BarChartView.m in Sources */ = {isa = PBXBuildFile; fileRef = ACB1C67B195436A300B6FF1C /* BarChartView.m */; };
+		ACD424CE19618B1800942F69 /* multiBarChartView.m in Sources */ = {isa = PBXBuildFile; fileRef = ACD424CD19618B1800942F69 /* multiBarChartView.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -58,6 +59,8 @@
 		ACB1C66619505C3D00B6FF1C /* BarChartTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BarChartTests.m; sourceTree = "<group>"; };
 		ACB1C67A195436A300B6FF1C /* BarChartView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BarChartView.h; sourceTree = "<group>"; };
 		ACB1C67B195436A300B6FF1C /* BarChartView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BarChartView.m; sourceTree = "<group>"; };
+		ACD424CC19618B1800942F69 /* multiBarChartView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = multiBarChartView.h; sourceTree = "<group>"; };
+		ACD424CD19618B1800942F69 /* multiBarChartView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = multiBarChartView.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -123,6 +126,8 @@
 				ACB1C64D19505C3D00B6FF1C /* Main_iPad.storyboard */,
 				ACB1C67A195436A300B6FF1C /* BarChartView.h */,
 				ACB1C67B195436A300B6FF1C /* BarChartView.m */,
+				ACD424CC19618B1800942F69 /* multiBarChartView.h */,
+				ACD424CD19618B1800942F69 /* multiBarChartView.m */,
 				ACB1C65019505C3D00B6FF1C /* ViewController.h */,
 				ACB1C65119505C3D00B6FF1C /* ViewController.m */,
 				ACB1C65319505C3D00B6FF1C /* Images.xcassets */,
@@ -261,6 +266,7 @@
 				ACB1C65219505C3D00B6FF1C /* ViewController.m in Sources */,
 				ACB1C64919505C3D00B6FF1C /* AppDelegate.m in Sources */,
 				ACB1C64519505C3D00B6FF1C /* main.m in Sources */,
+				ACD424CE19618B1800942F69 /* multiBarChartView.m in Sources */,
 				ACB1C67C195436A300B6FF1C /* BarChartView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -480,6 +486,7 @@
 				ACB1C66C19505C3D00B6FF1C /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		ACB1C66D19505C3D00B6FF1C /* Build configuration list for PBXNativeTarget "BarChartTests" */ = {
 			isa = XCConfigurationList;
@@ -488,6 +495,7 @@
 				ACB1C66F19505C3D00B6FF1C /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
