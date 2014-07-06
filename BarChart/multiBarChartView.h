@@ -8,6 +8,11 @@
 
 #import <UIKit/UIKit.h>
 
+@class multiBarChartView;
+@protocol BarChartViewDataSource <NSObject>
+@required
+- (NSArray*)getData;
+@end
 
 
 @interface multiBarChartView : UIView
@@ -23,7 +28,9 @@
 @property (nonatomic, assign) CGFloat barStrokeWidth;
 @property (nonatomic, assign) CGFloat chartMargin;
 @property (nonatomic, assign) CGFloat barWidth;
+@property (nonatomic, weak) id<BarChartViewDataSource> datasource;
 
 - (void) loadMultiBarChart;
+- (void) getDateLabelsForLastWeek;
 
 @end

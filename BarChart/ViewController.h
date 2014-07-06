@@ -10,7 +10,7 @@
 #import "BarChartView.h"
 #import "multiBarChartView.h"
 
-@interface ViewController : UIViewController
+@interface ViewController : UIViewController <BarChartViewDataSource>
 @property (weak, nonatomic) IBOutlet BarChartView *barChart;
 @property (weak, nonatomic) IBOutlet multiBarChartView *multiBarChart;
 
