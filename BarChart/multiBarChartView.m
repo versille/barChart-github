@@ -77,7 +77,10 @@
     UIView *chartArea;
     NSTimer *animationTimer;
     NSMutableArray *xAxisLabels;
+    CGFloat selectedViewData;
     NSInteger selectedViewIndex;
+    UILabel *selectedNumberLabel;
+    CGFloat numberLabelPercentage;
 }
 
 
@@ -97,7 +100,9 @@
     {
         mBarChartView = [[UIView alloc] initWithFrame:self.bounds];
         selectedViewIndex = -1;
-
+        selectedViewData = -1;
+        numberLabelPercentage = 0.65;
+        
         self.barMargin = 20;
         self.xScale = 7;
         self.yScale = 100;
@@ -113,31 +118,41 @@
         [self addSubview:mBarChartView];
 
         CGRect chartAreaRect = CGRectMake(self.chartMargin, self.chartMargin, mBarChartView.frame.size.width - self.chartMargin*2, self.frame.size.height - self.chartMargin*3);
+
+        CGRect selectedNumberLabelRect = CGRectMake(self.chartMargin*3, self.chartMargin, mBarChartView.frame.size.width - self.chartMargin*5, self.chartMargin*4);
         
         chartArea = [[UIView alloc]initWithFrame:chartAreaRect];
         chartArea.backgroundColor = [UIColor clearColor];
+        
+        selectedNumberLabel = [[UILabel alloc]initWithFrame:selectedNumberLabelRect];
+        selectedNumberLabel.backgroundColor = [UIColor colorWithWhite:0.5 alpha:0.3];
+        selectedNumberLabel.layer.cornerRadius = self.barCornerRadius*3;
+        selectedNumberLabel.layer.masksToBounds = YES;
+        selectedNumberLabel.adjustsFontSizeToFitWidth = YES;
+        selectedNumberLabel.minimumScaleFactor = 10;
+        selectedNumberLabel.textAlignment = NSTextAlignmentCenter;
+        selectedNumberLabel.hidden = YES;
+        selectedNumberLabel.font = [UIFont fontWithName:@"HelveticaNeue-Bold" size:50];
+        selectedNumberLabel.textColor = [UIColor colorWithWhite:0.3 alpha:1];
+
+
         [mBarChartView addSubview:chartArea];
-        CGRect rect = chartArea.frame;
+        [mBarChartView addSubview:selectedNumberLabel];
+//        CGRect rect = chartArea.frame;
 
         //add base bars
         int totalBars = 7;
         self.barWidth = (chartArea.frame.size.width - totalBars*self.barMargin) / totalBars;
 
         for (int i=0; i<7; i++) {
-            CGFloat height = chartArea.frame.size.height;
+//            CGFloat height = chartArea.frame.size.height;
 
             
-//            CGFloat currentX = i*self.barWidth+3;
-//            CGFloat currentY = chartArea.frame.size.height - round(self.chartMargin*(i+1));
               CGFloat currentX = i*self.barWidth+self.barMargin*i;
               CGFloat currentY = 0;
             
             CGRect barRect = CGRectMake(currentX, currentY, self.barWidth, chartArea.frame.size.height);
-//            CGRect barRect = CGRectMake(currentX, currentY, self.barWidth, self.chartMargin*(i+1));
-//            CGRect barRect = CGRectMake(currentX, 0, rect.size.width, rect.size.height);
             UIView *baseBar = [[UIView alloc] initWithFrame:barRect];
-//            baseBar.backgroundColor = [UIColor colorWithWhite:0.7 alpha:1];
-//            baseBar.backgroundColor = [UIColor clearColor];
             baseBar.layer.cornerRadius = 3.0;
             baseBar.layer.masksToBounds = YES;
             baseBar.layer.borderColor = [UIColor clearColor].CGColor;
@@ -181,17 +196,32 @@
     axisLayer.lineCap = kCALineCapRound;
     [mBarChartView.layer addSublayer:axisLayer];
     
-    // add bars to the chart
+    // add running stroke to base bars in chart area
     NSArray *barArray = [chartArea subviews];
     NSArray *dataArray = [self.datasource getData];
+
+    double sum = 0;
+    selectedViewData = -1;
+    selectedViewIndex= -1;
     
-    double sum = [[dataArray valueForKeyPath: @"@sum.self"] doubleValue];
+    for (int i=0; i<dataArray.count; i++) {
+        double currentValue = [(NSNumber*)[dataArray objectAtIndex:i] doubleValue];
+        sum = sum+currentValue;
+        if( currentValue > selectedViewData )
+        {
+            selectedViewIndex = i;
+            selectedViewData = currentValue;
+        }
+    }
+    double maxPercentage = selectedViewData/sum;
+    self.yScale = numberLabelPercentage/maxPercentage;
 
     for (int i=0; i< barArray.count; i++) {
     
         UIView* baseBarView = [barArray objectAtIndex:i];
         mBarLayer *bar = [mBarLayer layer];
         mBarLayer *selectBarLayer = [mBarLayer layer];
+        int currentDataValue = [(NSNumber*)[dataArray objectAtIndex:i] intValue];
         
         UIBezierPath *path = [UIBezierPath bezierPath];
         [path moveToPoint:CGPointMake(self.barWidth/2, baseBarView.frame.size.height)];
@@ -202,41 +232,28 @@
         bar.lineWidth = self.barWidth;
         bar.strokeColor = [UIColor yellowColor].CGColor;
         bar.strokeEnd    = 0.0;
-        CGRect rect = baseBarView.frame;
-        [baseBarView.layer addSublayer:selectBarLayer];
-        [baseBarView.layer addSublayer:bar];
-        double percentage = [[dataArray objectAtIndex:i] doubleValue]/sum;
-        if (percentage <=0.2) {
-            percentage = percentage *4.9;
-        }
-        else if (percentage <=0.5 && percentage > 0.2) {
-            percentage = percentage * 1.9;
-        }
-        else if (percentage<=0.8 && percentage >0.5){
-            percentage = percentage *1.2;
-        }
-        [bar createArcAnimationForKey:@"strokeEnd" fromValue:@0.0 toValue:[NSNumber numberWithDouble:percentage] timing:2.0 Delegate:self];
-        bar.strokeEnd = percentage;
-    }
-    
-/*
-    UIView *baseBar = [[chartArea subviews] objectAtIndex:0];
-    mBarLayer *bar = [mBarLayer layer];
-    
-    UIBezierPath *path = [UIBezierPath bezierPath];
-    [path moveToPoint:CGPointMake(self.barWidth/2, baseBar.frame.size.height)];
-    [path addLineToPoint:CGPointMake(self.barWidth/2, 0)];
+        bar.cornerRadius = self.barCornerRadius;
+        bar.barValue = currentDataValue;
 
-    
-    
-    bar.path = path.CGPath;
-    bar.lineWidth = self.barWidth;
-    bar.strokeColor = [UIColor yellowColor].CGColor;
-    bar.strokeEnd    = 1.0;
-    CGRect rect = baseBar.frame;
-    [baseBar.layer addSublayer:bar];
-*/
- 
+        double percentage = [[dataArray objectAtIndex:i] doubleValue]/sum;
+        
+        [baseBarView.layer addSublayer:bar];
+        [baseBarView.layer addSublayer:selectBarLayer];
+
+        CGRect rect = baseBarView.frame;
+        selectBarLayer.frame = CGRectMake(0, round(rect.size.height*(1-self.yScale*percentage)), rect.size.width, round(rect.size.height*self.yScale*percentage));
+        
+        [bar createArcAnimationForKey:@"strokeEnd" fromValue:@0.0 toValue:[NSNumber numberWithDouble:self.yScale*percentage] timing:2.0 Delegate:self];
+        bar.strokeEnd = self.yScale*percentage;
+    }
+}
+
+- (void)animationDidStop:(CAAnimation *)anim finished:(BOOL)flag
+{
+    if (selectedViewIndex!=-1) {
+        [self setViewSelectedAtIndex:selectedViewIndex];
+    }
+
 }
 
 - (void)loadXAxisLabels
@@ -268,7 +285,7 @@
         NSDateComponents *components = [[NSCalendar currentCalendar] components:NSCalendarUnitDay | NSCalendarUnitMonth | NSCalendarUnitYear fromDate:dayIter];
         NSInteger day = [components day];
         NSInteger month = [components month];
-        NSString *newDateString = [NSString stringWithFormat:@"%2d/%2d", month,day];
+        NSString *newDateString = [NSString stringWithFormat:@"%2ld/%2ld", month ,day];
         NSLog(@"%@", newDateString);
         [xAxisLabels addObject:newDateString];
         dayIter = [dayIter dateByAddingTimeInterval:secondsPerDay];
@@ -322,8 +339,8 @@
         }
         else
         {
-            [self setViewDeselectedAtIndex:selectedViewIndex];
-            selectedViewIndex = -1;
+//            [self setViewDeselectedAtIndex:selectedViewIndex];
+//            selectedViewIndex = -1;
         }
     }
     
@@ -332,18 +349,21 @@
 - (void)setViewSelectedAtIndex:(NSInteger)currentIndex
 {
     UIView *barView = [[chartArea subviews] objectAtIndex:currentIndex];
-    mBarLayer *selectBarLayer = [[barView.layer sublayers] objectAtIndex:0];
-    selectBarLayer.backgroundColor = [UIColor colorWithWhite:0.5 alpha:0.5].CGColor;
-//    barView.backgroundColor = [UIColor colorWithWhite:0.5 alpha:0.7];
-    
+    //add gray shade to the barstroke
+    mBarLayer *currentLayer = [[barView.layer sublayers] objectAtIndex:1];
+    currentLayer.backgroundColor = [UIColor colorWithWhite:0.5 alpha:0.3].CGColor;
+    //get the value of stroke to show in number Label
+    currentLayer = [[barView.layer sublayers] objectAtIndex:0];
+    selectedViewData = currentLayer.barValue;
+    selectedNumberLabel.text = [NSString stringWithFormat:@"%2ld", (NSInteger)currentLayer.barValue];
+    selectedNumberLabel.hidden = NO;
 }
 
 -(void)setViewDeselectedAtIndex:(NSInteger)currentIndex
 {
     UIView *barView = [[chartArea subviews] objectAtIndex:currentIndex];
-    mBarLayer *selectBarLayer = [[barView.layer sublayers] objectAtIndex:0];
+    mBarLayer *selectBarLayer = [[barView.layer sublayers] objectAtIndex:1];
     selectBarLayer.backgroundColor = [UIColor clearColor].CGColor;
-//    barView.backgroundColor = [UIColor clearColor];
     
 }
 /*

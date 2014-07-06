@@ -151,7 +151,7 @@
     bar.strokeColor = [UIColor yellowColor].CGColor;
     bar.strokeEnd    = 0.0;
     bar.calorie = 1800;
-    CGRect rect = baseBar.frame;
+//    CGRect rect = baseBar.frame;
     [baseBar.layer addSublayer:bar];
 
     zeroLabel = [self createNumberLabel:@0 xpos:baseBar.frame.origin.x-baseBar.frame.size.width/20 ypos:baseBar.frame.size.height+ baseBar.frame.origin.y width:baseBar.frame.size.width/10 height:baseBar.frame.size.height];
@@ -177,9 +177,9 @@
     NSNumber *calorie = @(currentXPercent * bar.calorie);
     
     numberLabel.frame = currentRect;
-    numberLabel.text = [NSString stringWithFormat:@"%d", [calorie integerValue]];
+    numberLabel.text = [NSString stringWithFormat:@"%ld", (long)[calorie integerValue]];
     
-    NSLog(@"currentYPos : %d\n", [calorie integerValue]);
+    NSLog(@"currentYPos : %ld\n", (long)[calorie integerValue]);
     
 //    numberLabel.frame.origin = CGPointMake(, <#CGFloat y#>)
     
